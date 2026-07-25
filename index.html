@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ربات انرژی‌گیر ⚡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500;700;900&family=Orbitron:wght@700;900&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game">
+  <canvas id="fx"></canvas>
+
+  <div id="hud">
+    <div class="panel" id="scoreWrap">
+      <span id="scoreLabel">امتیاز</span>
+      <span id="scoreVal">0</span>
+      <span id="combo"></span>
+    </div>
+    <div id="rightHud">
+      <div id="topButtons">
+        <div class="iconBtn" id="soundBtn">🔊</div>
+        <div class="iconBtn" id="pauseBtn">⏸</div>
+      </div>
+      <div class="panel" id="statusPanel">
+        <span id="levelTag">مرحله ۱</span>
+        <div id="hull"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="powerBar">
+    <span id="powerIcon">🛡️</span>
+    <span id="powerName">سپر فعال</span>
+    <div id="powerFill"><div id="powerFillInner"></div></div>
+  </div>
+
+  <div id="hint">👆 روی صفحه بکش تا ربات حرکت کنه</div>
+
+  <div id="character">🤖<div class="shieldRing"></div></div>
+
+  <div id="startScreen">
+    <div class="bigEmoji">🤖</div>
+    <div class="glowTitle">ربات انرژی‌گیر</div>
+    <div class="subtitle">کریستال و انرژی جمع کن، از موشک و سیارک فرار کن ☄️<br>سپر و آهنربا هم بگیر تا قوی‌تر بشی 💪</div>
+    <button class="playBtn" id="playBtn">شروع ماموریت 🚀</button>
+  </div>
+
+  <div id="pauseScreen">
+    <div class="bigEmoji">⏸</div>
+    <div class="glowTitle">توقف</div>
+    <button class="playBtn" id="resumeBtn">ادامه بده ▶</button>
+    <button class="secondaryBtn" id="restartFromPauseBtn">شروع دوباره</button>
+  </div>
+
+  <div id="overScreen">
+    <div class="bigEmoji">💥</div>
+    <div class="glowTitle">ماموریت تموم شد</div>
+    <div id="finalScoreBox">
+      <div class="statBox"><span class="statLabel">امتیاز</span><span class="statVal" id="finalScore">0</span></div>
+      <div class="statBox"><span class="statLabel">رکورد جلسه</span><span class="statVal" id="highScore">0</span></div>
+      <div class="statBox"><span class="statLabel">بهترین کمبو</span><span class="statVal" id="bestCombo">0</span></div>
+    </div>
+    <button class="playBtn" id="retryBtn">دوباره امتحان کن 🔁</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
