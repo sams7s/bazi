@@ -1,0 +1,206 @@
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
+
+html,body{
+  height:100%;
+  overflow:hidden;
+  overscroll-behavior:none;
+  font-family:'Vazirmatn', sans-serif;
+  background:#05070E;
+}
+
+#game{
+  position:relative;
+  width:100%;
+  height:100dvh;
+  overflow:hidden;
+  touch-action:none;
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(51,255,224,0.07), transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(124,92,255,0.09), transparent 55%),
+    linear-gradient(180deg, #060911 0%, #0A0F1E 55%, #0B1330 100%);
+}
+
+canvas#fx{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  z-index:5;
+  pointer-events:none;
+}
+
+#hud{
+  position:absolute; top:0; left:0; right:0;
+  z-index:20;
+  padding: calc(env(safe-area-inset-top,0px) + 12px) 14px 0 14px;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  pointer-events:none;
+}
+.panel{
+  background: rgba(14,18,32,0.82);
+  border:1px solid rgba(51,255,224,0.3);
+  border-radius:14px;
+  padding:8px 14px;
+  pointer-events:auto;
+}
+#scoreWrap{ display:flex; flex-direction:column; gap:2px; }
+#scoreLabel{ font-size:10px; letter-spacing:2px; color:#7FF7E4; opacity:0.8; }
+#scoreVal{
+  font-family:'Orbitron', sans-serif;
+  font-size:24px; font-weight:900;
+  color:#EAFFFB;
+}
+#combo{
+  font-size:12px; font-weight:700; color:#FF9F1C;
+  min-height:14px;
+}
+
+#rightHud{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+#topButtons{ display:flex; gap:8px; }
+.iconBtn{
+  width:38px; height:38px;
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px;
+  background: rgba(14,18,32,0.85);
+  border:1px solid rgba(51,255,224,0.3);
+  color:#EAFFFB;
+  pointer-events:auto;
+}
+#statusPanel{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+#hull{ display:flex; gap:5px; }
+.hp{
+  width:22px; height:22px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+  transition: transform .25s, opacity .25s;
+}
+.hp.lost{ opacity:0.15; transform:scale(0.7); }
+
+#levelTag{
+  font-size:11px; color:#9FB4FF; letter-spacing:1px;
+  background: rgba(124,92,255,0.15);
+  border:1px solid rgba(124,92,255,0.4);
+  padding:3px 10px; border-radius:20px;
+}
+
+#powerBar{
+  position:absolute;
+  top: calc(env(safe-area-inset-top,0px) + 66px);
+  left:50%; transform:translateX(-50%);
+  z-index:20;
+  display:flex; align-items:center; gap:8px;
+  background: rgba(14,18,32,0.85);
+  border:1px solid rgba(255,159,28,0.4);
+  border-radius:20px;
+  padding:5px 14px;
+  font-size:13px; color:#FFD9A0;
+  opacity:0; pointer-events:none;
+  transition: opacity .2s;
+}
+#powerBar.show{ opacity:1; }
+#powerFill{
+  width:60px; height:5px; border-radius:4px;
+  background: rgba(255,255,255,0.12);
+  overflow:hidden;
+}
+#powerFillInner{ height:100%; background:linear-gradient(90deg,#FF9F1C,#FFD9A0); width:100%; }
+
+#character{
+  position:absolute;
+  bottom: calc(env(safe-area-inset-bottom,0px) + 34px);
+  left:0;
+  width:76px; height:76px;
+  font-size:56px;
+  line-height:76px;
+  text-align:center;
+  z-index:15;
+  border-radius:50%;
+  filter: drop-shadow(0 0 10px rgba(51,255,224,0.5));
+  will-change: transform;
+  transform: translate3d(-50%,0,0);
+  transition: box-shadow .2s;
+}
+
+/* Shield/magnet no longer draw a ring around the character — the
+   power-up is now announced with a one-time on-screen popup text
+   (see activatePower in script.js) plus the existing top powerBar
+   HUD. Keep a subtle glow only, no ring/ellipse to go lopsided. */
+#character.shielded{
+  filter: drop-shadow(0 0 14px rgba(124,92,255,0.85));
+}
+#character.magnet{
+  filter: drop-shadow(0 0 14px rgba(51,255,224,0.85));
+}
+
+/* Legacy ring element kept in markup for compatibility; disabled. */
+#character .shieldRing{ display:none; }
+
+#startScreen,#overScreen,#pauseScreen{
+  position:absolute; inset:0; z-index:60;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px;
+  text-align:center;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(5,7,14,0.97), rgba(9,12,24,0.99));
+}
+#pauseScreen,#overScreen{ display:none; }
+
+.glowTitle{
+  font-family:'Orbitron', sans-serif;
+  font-size:28px; font-weight:900;
+  color:#EAFFFB;
+  text-shadow:0 0 14px rgba(51,255,224,0.55);
+  letter-spacing:1px;
+}
+.subtitle{
+  font-size:15px; color:#9FB4E0; max-width:300px; line-height:1.8; font-weight:500;
+}
+.bigEmoji{
+  font-size:70px;
+  animation: floaty 2.4s ease-in-out infinite;
+}
+@keyframes floaty{
+  0%,100%{ transform: translateY(0) rotate(-3deg); }
+  50%{ transform: translateY(-12px) rotate(3deg); }
+}
+
+button.playBtn{
+  font-family:'Vazirmatn', sans-serif;
+  font-size:19px; font-weight:800;
+  color:#05070E;
+  background: linear-gradient(180deg, #5CFFE6, #22D9BE);
+  border:none; border-radius:16px;
+  padding:15px 42px;
+  box-shadow: 0 6px 0 #159685;
+  cursor:pointer;
+}
+button.playBtn:active{ transform: translateY(4px); box-shadow:0 2px 0 #159685; }
+
+button.secondaryBtn{
+  font-family:'Vazirmatn', sans-serif;
+  font-size:15px; font-weight:700;
+  color:#EAFFFB;
+  background: rgba(51,255,224,0.08);
+  border:1px solid rgba(51,255,224,0.4);
+  border-radius:14px;
+  padding:11px 30px;
+}
+
+#finalScoreBox{ display:flex; gap:22px; }
+.statBox{ display:flex; flex-direction:column; gap:2px; }
+.statLabel{ font-size:11px; color:#7FF7E4; letter-spacing:1px; }
+.statVal{ font-family:'Orbitron',sans-serif; font-size:22px; font-weight:900; color:#fff; }
+
+#hint{
+  position:absolute;
+  bottom: calc(env(safe-area-inset-bottom,0px) + 128px);
+  left:50%; transform:translateX(-50%);
+  font-size:12.5px; color:#7FA0C9; z-index:20; pointer-events:none;
+  background:rgba(10,14,26,0.5); padding:5px 12px; border-radius:20px;
+  white-space:nowrap;
+}
+
+@media (max-width:420px){
+  .glowTitle{ font-size:23px; }
+  .bigEmoji{ font-size:58px; }
+  #character{ width:64px; height:64px; font-size:46px; line-height:64px; }
+}
